@@ -164,6 +164,22 @@ public class Matrix implements IMatrix {
         return resMult;
     }
 
+    //множення матриць
+    public static Matrix multiplication(Matrix matrix, Matrix otherMatrix) {
+        if (matrix.getColumns() != otherMatrix.getColumns())
+            throw new IllegalArgumentException("Matrices must have an equal number of columns and rows");
+        Matrix multiplct = new Matrix(matrix.getRows(), otherMatrix.getColumns());
+        for (int i = 0; i < matrix.getRows(); i++) {
+            for (int j = 0; j < otherMatrix.getColumns(); j++) {
+                multiplct.elements[i][j] = 0;
+                for (int a = 0; a < matrix.getColumns(); a++) {
+                    multiplct.elements[i][j] += matrix.elements[i][a] * otherMatrix.getElem(a,j);
+                }
+            }
+        }
+        return multiplct;
+    }
+
     //Повертає матрицю
     @Override
     public float[][] getMatrix() {

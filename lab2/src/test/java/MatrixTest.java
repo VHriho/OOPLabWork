@@ -297,4 +297,28 @@ public class MatrixTest {
         Throwable thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> Matrix.sumMatrix(matrix1, matrix2));
         Assertions.assertEquals("Matrices must have an equal number of columns and rows", thrown.getMessage());
     }
+
+    //множення матриць
+    @Test
+    public void step9() {
+        Matrix matrix = new Matrix(2,2);
+        matrix.setElem(0,0,2);
+        matrix.setElem(0,1,3);
+        matrix.setElem(1,0,2);
+        matrix.setElem(1,1,7);
+
+        Matrix matrix1 = new Matrix(1,2);
+        matrix1.setElem(0,0,4);
+        matrix1.setElem(0,1,5);
+
+        Matrix matrix2 = new Matrix(3,3);
+        matrix2.setRandomElem();
+
+        Assertions.assertEquals(18, Matrix.multiplication(matrix1, matrix).getMatrix()[0][0]);
+        Assertions.assertEquals(47, Matrix.multiplication(matrix1, matrix).getMatrix()[0][1]);
+
+        //виняток при нерівності розмірностей матриць, що перемножуються
+        Throwable thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> Matrix.multiplication(matrix, matrix2));
+        Assertions.assertEquals("Matrices must have an equal number of columns and rows", thrown.getMessage());
+    }
 }
