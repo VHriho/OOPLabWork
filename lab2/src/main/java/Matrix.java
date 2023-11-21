@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Matrix implements IMatrix {
@@ -109,6 +110,21 @@ public class Matrix implements IMatrix {
     @Override
     public int getColumns(){
         return elements[0].length;
+    }
+
+    //повертає розмірність матриці
+    @Override
+    public HashMap<String, Integer> getDimension() {
+        HashMap<String, Integer> map = new HashMap<>();
+        if (elements.length == 0 || elements[0].length == 0) {
+            map.put("Rows", 0);
+            map.put("Columns", 0);
+        }
+        else {
+            map.put("Rows", elements.length);
+            map.put("Columns", elements[0].length);
+        }
+        return map;
     }
 
     //Повертає матрицю
