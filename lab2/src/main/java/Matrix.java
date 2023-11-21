@@ -57,10 +57,52 @@ public class Matrix implements IMatrix {
             System.arraycopy(matrix[i], 0, elements[i], 0, elements[0].length);
     }
 
+    //повертає елемент на претині рядка і стовпчика
+    @Override
+    public float getElem(int m, int n) {
+        if (m < 0 || n < 0)
+            throw new NegativeArraySizeException("Row or column value is negative");
+        if (m >= elements.length || n >= elements[0].length)
+            throw new ArrayIndexOutOfBoundsException("Row or column value out of matrix dimension");
+        else
+            return elements[m][n];
+    }
+
+    //повертає заданий рядок
+    @Override
+    public float[] getRow(int m) {
+        if (m < 0)
+            throw new NegativeArraySizeException("Row value is negative");
+        if (m >= elements.length)
+            throw new ArrayIndexOutOfBoundsException("Row value out of matrix dimension");
+        else
+            return elements[m];
+
+    }
+
     //повертає кількість рядків
     @Override
     public int getRows(){
         return elements.length;
+    }
+
+    //повертає заданий стовпчик
+    @Override
+    public float[] getColumn(int n) {
+        if (n < 0)
+            throw new NegativeArraySizeException("Column value is negative");
+        if (n >= elements[0].length)
+            throw new ArrayIndexOutOfBoundsException("Column value out of matrix dimension");
+        else {
+            float[] column = new float[elements[0].length];
+            for (int i = 0; i < elements.length; i++) {
+                for (int j = 0; j < elements[0].length; j++) {
+                    if (j == n)
+                        column[i] = elements[i][j];
+                }
+            }
+            return column;
+        }
     }
 
     //повертає кількість стовпців
