@@ -140,6 +140,30 @@ public class Matrix implements IMatrix {
         return Objects.hash(elements.length, elements[0].length, Arrays.deepHashCode(elements), 31);
     }
 
+    //сума матриць
+    public static Matrix sumMatrix(Matrix matrix, Matrix otherMatrix) {
+        if (matrix.getRows() != otherMatrix.getRows() || matrix.getColumns() != otherMatrix.getColumns())
+            throw new IllegalArgumentException("Matrices must have an equal number of columns and rows");
+        Matrix sumOfMatrix = new Matrix(matrix.getRows(), matrix.getColumns());
+        for (int i = 0; i < matrix.getRows(); i++) {
+            for (int j = 0; j < matrix.getColumns(); j++) {
+                sumOfMatrix.setElem(i, j, matrix.getElem(i, j) + otherMatrix.getElem(i, j));
+            }
+        }
+        return sumOfMatrix;
+    }
+
+    //множення на скаляр
+    public static Matrix multMatrix(Matrix matrix, float mult) {
+        Matrix resMult = new Matrix(matrix.elements.length, matrix.elements[0].length);
+        for (int i = 0; i < matrix.elements.length; i++) {
+            for (int j = 0; j < matrix.elements[0].length; j++) {
+                resMult.setElem(i, j, matrix.elements[i][j] * mult);
+            }
+        }
+        return resMult;
+    }
+
     //Повертає матрицю
     @Override
     public float[][] getMatrix() {
