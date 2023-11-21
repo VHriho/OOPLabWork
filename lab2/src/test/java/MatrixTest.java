@@ -14,6 +14,31 @@ public class MatrixTest {
         Assertions.assertEquals(3, selfDimensioned.getColumns());
         Assertions.assertEquals(0, emptyMatrix.getMatrix().length);
         Assertions.assertEquals(true, copiedMatrix.equals(selfDimensioned));
+
+        //виключення при введені від'ємного параметру розмірності
+        Throwable thrown = Assertions.assertThrows(NegativeArraySizeException.class, () -> new Matrix(-2,3));
+        Assertions.assertEquals("Row or column value is negative", thrown.getMessage());
+    }
+
+    @Test
+    void step2ForImmutable() {
+        ImmutableMatrix emptyMatrix = new ImmutableMatrix();
+        ImmutableMatrix selfDimensioned = new ImmutableMatrix(3,3);
+        ImmutableMatrix copiedMatrix = new ImmutableMatrix(selfDimensioned);
+        ImmutableMatrix matrix = new ImmutableMatrix(new Matrix(4,4));
+        ImmutableMatrix matrix1 = new ImmutableMatrix(new ImmutableMatrix(5,5));
+
+
+        Assertions.assertEquals(3, selfDimensioned.getRows());
+        Assertions.assertEquals(3, selfDimensioned.getColumns());
+        Assertions.assertEquals(0, emptyMatrix.getMatrix().length);
+        Assertions.assertEquals(4, matrix.getMatrix().length);
+        Assertions.assertEquals(5, matrix1.getMatrix().length);
+        Assertions.assertEquals(true, copiedMatrix.equals(selfDimensioned));
+
+        //виключення при введені від'ємного параметру розмірності
+        Throwable thrown = Assertions.assertThrows(NegativeArraySizeException.class, () -> new ImmutableMatrix(-1,3));
+        Assertions.assertEquals("Row or column value is negative", thrown.getMessage());
     }
 
     //методи, що дозволяють заповнити матрицю значеннями
@@ -53,6 +78,24 @@ public class MatrixTest {
         Assertions.assertEquals("Dimension of matrix is 0", thrown2.getMessage());
     }
 
+    @Test
+    void step3ForImmutable() {
+        ImmutableMatrix matrix = new ImmutableMatrix(3,3);
+        float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
+
+        //виключення при зміні значення immutable матриці
+        Throwable thrown = Assertions.assertThrows(UnsupportedOperationException.class, () -> matrix.setElem(1,0,1));
+        Assertions.assertEquals("Immutable Matrix cannot be changed", thrown.getMessage());
+
+        //виключення при зміні випадковими значеннями immutable матриці
+        Throwable thrown1 = Assertions.assertThrows(UnsupportedOperationException.class, () -> matrix.setRandomElem());
+        Assertions.assertEquals("Immutable Matrix cannot be changed", thrown1.getMessage());
+
+        //виключення при зміні заданим набором значеннь
+        Throwable thrown2 = Assertions.assertThrows(UnsupportedOperationException.class, () -> matrix.fillElem(filledMatrix));
+        Assertions.assertEquals("Immutable Matrix cannot be changed", thrown2.getMessage());
+    }
+
     //методи, що дозволяють отримати заданий елемент, рядок чи стовпчик
     @Test
     void step4() {
@@ -89,6 +132,44 @@ public class MatrixTest {
         Assertions.assertEquals("Column value out of matrix dimension", thrown6.getMessage());
     }
 
+    @Test
+    void step4ForImmutable() {
+        Matrix matrix = new Matrix(3,3);
+        float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
+        matrix.fillElem(filledMatrix);
+        ImmutableMatrix matrix1 = new ImmutableMatrix(matrix);
+
+        matrix.setElem(0,0,0); //іммутабельна матриця не змінилась
+
+        Assertions.assertEquals(1, matrix1.getElem(0,0));
+        Assertions.assertEquals(1, matrix1.getRow(0)[0]);
+        Assertions.assertEquals(2, matrix1.getColumn(1)[0]);
+
+        //виключення при від'ємному значені рядка або стовпчика
+        Throwable thrown = Assertions.assertThrows(NegativeArraySizeException.class, () -> matrix1.getElem(2, -1));
+        Assertions.assertEquals("Row or column value is negative", thrown.getMessage());
+
+        //виключення при порушені вказання розмірності
+        Throwable thrown1 = Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> matrix1.getElem(2, 4));
+        Assertions.assertEquals("Row or column value out of matrix dimension", thrown1.getMessage());
+
+        //виключення при від'ємному значені рядка
+        Throwable thrown3 = Assertions.assertThrows(NegativeArraySizeException.class, () -> matrix1.getRow(-1));
+        Assertions.assertEquals("Row value is negative", thrown3.getMessage());
+
+        //виключення при порушені вказання розмірності
+        Throwable thrown4 = Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> matrix1.getRow(4));
+        Assertions.assertEquals("Row value out of matrix dimension", thrown4.getMessage());
+
+        //виключення при від'ємному значені стовпця
+        Throwable thrown5 = Assertions.assertThrows(NegativeArraySizeException.class, () -> matrix1.getColumn(-1));
+        Assertions.assertEquals("Column value is negative", thrown5.getMessage());
+
+        //виключення при порушені вказання розмірності
+        Throwable thrown6 = Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> matrix1.getColumn(4));
+        Assertions.assertEquals("Column value out of matrix dimension", thrown6.getMessage());
+    }
+
     //розмірність матриці
     @Test
     public void step5() {
@@ -98,6 +179,20 @@ public class MatrixTest {
         float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
         matrix2.fillElem(filledMatrix);
         Matrix matrix3 = new Matrix(matrix2);
+
+        Assertions.assertEquals(0, matrix.getDimension().get("Rows"));
+        Assertions.assertEquals(3,matrix1.getDimension().get("Columns"));
+        Assertions.assertEquals(3,matrix3.getDimension().get("Columns"));
+    }
+
+    @Test
+    public void step5ForImmutable() {
+        ImmutableMatrix matrix = new ImmutableMatrix();
+        ImmutableMatrix matrix1 = new ImmutableMatrix(3,3);
+        Matrix matrix2 = new Matrix(3,3);
+        float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
+        matrix2.fillElem(filledMatrix);
+        ImmutableMatrix matrix3 = new ImmutableMatrix(matrix2);
 
         Assertions.assertEquals(0, matrix.getDimension().get("Rows"));
         Assertions.assertEquals(3,matrix1.getDimension().get("Columns"));
@@ -120,4 +215,55 @@ public class MatrixTest {
         Assertions.assertEquals(true, matrix1.hashCode() == matrix2.hashCode());
     }
 
+    @Test
+    public void step6ForImmutable() {
+        ImmutableMatrix matrix = new ImmutableMatrix();
+        ImmutableMatrix matrix1 = new ImmutableMatrix(3,3);
+        ImmutableMatrix matrix2 = new ImmutableMatrix(matrix1);
+        Matrix matrix3 = new Matrix(3,3);
+        float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
+        matrix3.fillElem(filledMatrix);
+        ImmutableMatrix matrix4 = new ImmutableMatrix(matrix3);
+
+        Assertions.assertEquals(false, matrix.equals(matrix1));
+        Assertions.assertEquals(true, matrix1.equals(matrix2));
+        Assertions.assertEquals(false, matrix4.equals(matrix3));
+
+        Assertions.assertEquals(false, matrix1.hashCode() == matrix4.hashCode());
+        Assertions.assertEquals(true, matrix1.hashCode() == matrix2.hashCode());
+        Assertions.assertEquals(true, matrix3.hashCode() == matrix4.hashCode());
+    }
+
+    //перевірка мутабельності матриці
+    @Test
+    public void step7() {
+        Matrix matrix = new Matrix(3,3);
+        float[][] filledMatrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        matrix.fillElem(filledMatrix);
+
+        Matrix matrix1 = new Matrix(matrix);
+
+        matrix.setElem(0,0,0);
+
+        Assertions.assertEquals(0, matrix.getElem(0,0));
+        Assertions.assertEquals(0,matrix1.getElem(0,0));
+    }
+
+    //перевірка іммутабельності матриці
+    @Test
+    public void step7ForImmutable() {
+        Matrix matrix = new Matrix(3,3);
+        float[][] filledMatrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        matrix.fillElem(filledMatrix);
+
+        ImmutableMatrix matrix1 = new ImmutableMatrix(matrix);
+
+        matrix.setElem(0,0,0);
+
+        ImmutableMatrix matrix2 = new ImmutableMatrix(matrix);
+
+        Assertions.assertEquals(0, matrix.getElem(0,0));
+        Assertions.assertEquals(1,matrix1.getElem(0,0));
+        Assertions.assertEquals(0,matrix2.getElem(0,0));
+    }
 }

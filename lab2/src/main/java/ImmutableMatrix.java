@@ -1,57 +1,61 @@
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.Random;
 
-public class Matrix implements IMatrix {
+public class ImmutableMatrix implements IMatrix {
+
+    private final Matrix matrix;
+
     private float[][] elements;
 
     //конструктор, що створює пусту матрицю
-    public Matrix() {
+    public ImmutableMatrix() {
+        this.matrix = new Matrix();
         elements = new float[0][0];
     }
 
     //конструктор, що створює матрицю заданого розміру
-    public Matrix(int m, int n) {
+    public ImmutableMatrix(int m, int n) {
         if (m < 0 || n < 0)
             throw new NegativeArraySizeException("Row or column value is negative");
-        else
+        else {
+            this.matrix = new Matrix(m, n);
             elements = new float[m][n];
+        }
     }
 
     //конструктор, що створює копію іншої матриці
-    public Matrix(Matrix copiedMatrix) {
-         this.elements = copiedMatrix.elements;
+    public ImmutableMatrix(Matrix copiedMatrix) {
+        matrix = new Matrix(copiedMatrix);
+        elements = new float[copiedMatrix.getRows()][copiedMatrix.getColumns()];
+        for (int i = 0; i < copiedMatrix.getRows(); i++)
+            elements[i] = Arrays.copyOf(copiedMatrix.getMatrix()[i], copiedMatrix.getMatrix()[i].length);
+    }
+
+    public ImmutableMatrix(ImmutableMatrix copiedMatrix) {
+        elements = new float[copiedMatrix.getRows()][copiedMatrix.getColumns()];
+        for (int i = 0; i < copiedMatrix.getRows(); i++)
+            elements[i] = Arrays.copyOf(copiedMatrix.getMatrix()[i], copiedMatrix.getMatrix()[i].length);
+        matrix = new Matrix(copiedMatrix.getRows(),copiedMatrix.getColumns());
+        matrix.fillElem(elements);
     }
 
     //заповнює матрицю значеннями
     @Override
     public void setElem(int m, int n, float elem) {
-        if (m < 0 || n < 0)
-            throw new NegativeArraySizeException("Row or column value is negative");
-        if (m >= elements.length || n >= elements[0].length)
-            throw new ArrayIndexOutOfBoundsException("Row or column value out of matrix dimension");
-        else
-            elements[m][n] = elem;
+        throw new UnsupportedOperationException("Immutable Matrix cannot be changed");
     }
 
     //заповнює матрицю випадковими значеннями
     @Override
     public void setRandomElem() {
-        if (elements.length == 0)
-            throw new ArrayIndexOutOfBoundsException("Dimension of matrix is 0");
-        Random setRandom = new Random();
-        for (int i = 0; i < elements.length; i++) {
-            for (int j = 0; j < elements[0].length; j++) {
-                elements[i][j] = setRandom.nextFloat(10);
-            }
-        }
+        throw new UnsupportedOperationException("Immutable Matrix cannot be changed");
     }
 
+    //заповнює матрицю заданим набором значень
     @Override
-    public void fillElem(float[][] matrix) {
-        for (int i = 0; i < elements.length; i++)
-            System.arraycopy(matrix[i], 0, elements[i], 0, elements[0].length);
+    public void fillElem(float[][] matrix){
+        throw new UnsupportedOperationException("Immutable Matrix cannot be changed");
     }
 
     //повертає елемент на претині рядка і стовпчика
@@ -74,12 +78,11 @@ public class Matrix implements IMatrix {
             throw new ArrayIndexOutOfBoundsException("Row value out of matrix dimension");
         else
             return elements[m];
-
     }
 
     //повертає кількість рядків
     @Override
-    public int getRows(){
+    public int getRows() {
         return elements.length;
     }
 
@@ -104,7 +107,7 @@ public class Matrix implements IMatrix {
 
     //повертає кількість стовпців
     @Override
-    public int getColumns(){
+    public int getColumns() {
         return elements[0].length;
     }
 
@@ -130,7 +133,7 @@ public class Matrix implements IMatrix {
             return true;
         if(getClass() != other.getClass())
             return false;
-        Matrix newMatrix = (Matrix) other;
+        ImmutableMatrix newMatrix = (ImmutableMatrix) other;
         return (elements.length == newMatrix.elements.length && elements[0].length == newMatrix.elements[0].length && Arrays.deepEquals(elements, newMatrix.elements));
     }
 
@@ -144,5 +147,7 @@ public class Matrix implements IMatrix {
     @Override
     public float[][] getMatrix() {
         return elements;
+
     }
+
 }
