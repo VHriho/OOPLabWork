@@ -373,4 +373,17 @@ public class MatrixTest {
         Throwable thrown = Assertions.assertThrows(NegativeArraySizeException.class, () -> Matrix.rowMatrix(-2));
         Assertions.assertEquals("Row value must be not negative or equal 0", thrown.getMessage());
     }
+
+    //Матрицюя-стовпчик, заповнена випадковими значеннями
+    @Test
+    public void step14() {
+        Assertions.assertEquals(1, Matrix.columnMatrix(3).getDimension().get("Rows"));
+        Assertions.assertEquals(3, Matrix.columnMatrix(3).getDimension().get("Columns"));
+        Assertions.assertEquals(1, Matrix.columnMatrix(4).getDimension().get("Rows"));
+        Assertions.assertEquals(4, Matrix.columnMatrix(4).getDimension().get("Columns"));
+
+        //виняток при від'ємних значеннях розмірності матриці-стовпця
+        Throwable thrown = Assertions.assertThrows(NegativeArraySizeException.class, () -> Matrix.columnMatrix(-2));
+        Assertions.assertEquals("Column value must be not negative or equal 0", thrown.getMessage());
+    }
 }
