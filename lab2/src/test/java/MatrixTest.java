@@ -360,4 +360,17 @@ public class MatrixTest {
         Throwable thrown1 = Assertions.assertThrows(IllegalArgumentException.class, () -> Matrix.singleMatrix(3,2));
         Assertions.assertEquals("Rows and columns value must be equal", thrown1.getMessage());
     }
+
+    //Матрицюя-строка, заповнена випадковими значеннями
+    @Test
+    public void step13() {
+        Assertions.assertEquals(3, Matrix.rowMatrix(3).getDimension().get("Rows"));
+        Assertions.assertEquals(1, Matrix.rowMatrix(3).getDimension().get("Columns"));
+        Assertions.assertEquals(4, Matrix.rowMatrix(4).getDimension().get("Rows"));
+        Assertions.assertEquals(1, Matrix.rowMatrix(4).getDimension().get("Columns"));
+
+        //виняток при від'ємних значеннях розмірності матриці-рядка
+        Throwable thrown = Assertions.assertThrows(NegativeArraySizeException.class, () -> Matrix.rowMatrix(-2));
+        Assertions.assertEquals("Row value must be not negative or equal 0", thrown.getMessage());
+    }
 }

@@ -225,6 +225,18 @@ public class Matrix implements IMatrix {
         return single;
     }
 
+    //матриця-рядок
+    public static Matrix rowMatrix(int m) {
+        if(m <= 0 )
+            throw new NegativeArraySizeException("Row value must be not negative or equal 0");
+        Random setRandom = new Random();
+        Matrix rowMat = new Matrix(m, 1);
+        for (int i = 0; i < m; i++) {
+            rowMat.elements[i][0] = setRandom.nextFloat(10);
+        }
+        return rowMat;
+    }
+
     //Повертає матрицю
     @Override
     public float[][] getMatrix() {
