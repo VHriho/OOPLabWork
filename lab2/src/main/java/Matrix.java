@@ -180,6 +180,17 @@ public class Matrix implements IMatrix {
         return multiplct;
     }
 
+    //транспонування матриці
+    public static Matrix transposeMatrix(Matrix matrix) {
+        Matrix transpose = new Matrix(matrix.elements.length, matrix.elements[0].length);
+        for (int i = 0; i < matrix.elements.length; i++)  {
+            for (int j = 0; j < matrix.elements[0].length; j++) {
+                transpose.elements[i][j] = matrix.elements[j][i];
+            }
+        }
+        return transpose;
+    }
+
     //Повертає матрицю
     @Override
     public float[][] getMatrix() {

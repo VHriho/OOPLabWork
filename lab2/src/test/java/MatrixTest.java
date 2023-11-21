@@ -321,4 +321,17 @@ public class MatrixTest {
         Throwable thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> Matrix.multiplication(matrix, matrix2));
         Assertions.assertEquals("Matrices must have an equal number of columns and rows", thrown.getMessage());
     }
+
+    //повертає транспоновану матрицю
+    @Test
+    public void step10() {
+        Matrix matrix = new Matrix(3,3);
+        float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
+        matrix.fillElem(filledMatrix);
+
+        Assertions.assertEquals(1, Matrix.transposeMatrix(matrix).getMatrix()[0][0]);
+        Assertions.assertEquals(4, Matrix.transposeMatrix(matrix).getMatrix()[0][1]);
+        Assertions.assertEquals(7, Matrix.transposeMatrix(matrix).getMatrix()[0][2]);
+        Assertions.assertEquals(2, Matrix.transposeMatrix(matrix).getMatrix()[1][0]);
+    }
 }
