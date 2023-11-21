@@ -28,7 +28,6 @@ public class MatrixTest {
         ImmutableMatrix matrix = new ImmutableMatrix(new Matrix(4,4));
         ImmutableMatrix matrix1 = new ImmutableMatrix(new ImmutableMatrix(5,5));
 
-
         Assertions.assertEquals(3, selfDimensioned.getRows());
         Assertions.assertEquals(3, selfDimensioned.getColumns());
         Assertions.assertEquals(0, emptyMatrix.getMatrix().length);
@@ -333,5 +332,16 @@ public class MatrixTest {
         Assertions.assertEquals(4, Matrix.transposeMatrix(matrix).getMatrix()[0][1]);
         Assertions.assertEquals(7, Matrix.transposeMatrix(matrix).getMatrix()[0][2]);
         Assertions.assertEquals(2, Matrix.transposeMatrix(matrix).getMatrix()[1][0]);
+    }
+
+    //Діагональну матрицю (на основі задано вектора)
+    @Test
+    public void step11() {
+        float[] diag = {1, 2, 3, 1};
+
+        Assertions.assertEquals(1, Matrix.diagonal(diag).getMatrix()[0][0]);
+        Assertions.assertEquals(2, Matrix.diagonal(diag).getMatrix()[1][1]);
+        Assertions.assertEquals(3, Matrix.diagonal(diag).getMatrix()[2][2]);
+        Assertions.assertEquals(1, Matrix.diagonal(diag).getMatrix()[3][3]);
     }
 }
