@@ -16,6 +16,10 @@ public interface IMatrix {
 
     HashMap<String, Integer> getDimension(); //повертає розмірність матриці
 
+    boolean equals(Object other); //перевизначений метод equals
+
+    int hashCode(); //перевизначений метод hashCode
+
     float[][] getMatrix(); //повертає матрицю
 
     int getRows(); //повертає кількість рядки

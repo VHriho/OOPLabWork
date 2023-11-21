@@ -6,30 +6,31 @@ public class MatrixTest {
     //конструктори, що створюють пусту матрицю, матрицю заданого розміру та копію іншої матриці
     @Test
     void step2() {
-        IMatrix emptyMatrix = new Matrix();
-        IMatrix selfDimensioned = new Matrix(3, 3);
-        IMatrix copiedMatrix = new Matrix(selfDimensioned);
+        Matrix emptyMatrix = new Matrix();
+        Matrix selfDimensioned = new Matrix(3, 3);
+        Matrix copiedMatrix = new Matrix(selfDimensioned);
 
         Assertions.assertEquals(3, selfDimensioned.getRows());
         Assertions.assertEquals(3, selfDimensioned.getColumns());
         Assertions.assertEquals(0, emptyMatrix.getMatrix().length);
+        Assertions.assertEquals(true, copiedMatrix.equals(selfDimensioned));
     }
 
     //методи, що дозволяють заповнити матрицю значеннями
     @Test
     void step3() {
-        IMatrix matrix = new Matrix(2,2);
+        Matrix matrix = new Matrix(2,2);
         matrix.setElem(0,0,1);
         matrix.setElem(0,1,2);
         matrix.setElem(1,0,3);
         matrix.setElem(1,1,4);
 
-        IMatrix matrix1 = new Matrix(3,3);
+        Matrix matrix1 = new Matrix(3,3);
         matrix1.setRandomElem();
 
-        IMatrix matrix2 = new Matrix();
+        Matrix matrix2 = new Matrix();
 
-        IMatrix matrix3 = new Matrix(3,3);
+        Matrix matrix3 = new Matrix(3,3);
         float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
         matrix3.fillElem(filledMatrix);
 
@@ -55,7 +56,7 @@ public class MatrixTest {
     //методи, що дозволяють отримати заданий елемент, рядок чи стовпчик
     @Test
     void step4() {
-        IMatrix matrix = new Matrix(3,3);
+        Matrix matrix = new Matrix(3,3);
         float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
         matrix.fillElem(filledMatrix);
 
@@ -91,16 +92,32 @@ public class MatrixTest {
     //розмірність матриці
     @Test
     public void step5() {
-        IMatrix matrix = new Matrix();
-        IMatrix matrix1 = new Matrix(3,3);
-        IMatrix matrix2 = new Matrix(3,3);
+        Matrix matrix = new Matrix();
+        Matrix matrix1 = new Matrix(3,3);
+        Matrix matrix2 = new Matrix(3,3);
         float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
         matrix2.fillElem(filledMatrix);
-        IMatrix matrix3 = new Matrix(matrix2);
+        Matrix matrix3 = new Matrix(matrix2);
 
         Assertions.assertEquals(0, matrix.getDimension().get("Rows"));
         Assertions.assertEquals(3,matrix1.getDimension().get("Columns"));
         Assertions.assertEquals(3,matrix3.getDimension().get("Columns"));
+    }
+
+    //методи equals та hashCode
+    @Test
+    public void step6() {
+        Matrix matrix = new Matrix();
+        Matrix matrix1 = new Matrix(3,3);
+        Matrix matrix2 = new Matrix(matrix1);
+        Matrix matrix3 = new Matrix(3,3);
+        float[][] filledMatrix = {{1,2,3},{4,5,6},{7,8,9}};
+        matrix3.fillElem(filledMatrix);
+
+        Assertions.assertEquals(false, matrix.equals(matrix1));
+        Assertions.assertEquals(false, matrix3.equals(matrix1));
+        Assertions.assertEquals(true, matrix1.equals(matrix2));
+        Assertions.assertEquals(true, matrix1.hashCode() == matrix2.hashCode());
     }
 
 }

@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class Matrix implements IMatrix {
@@ -125,6 +126,23 @@ public class Matrix implements IMatrix {
             map.put("Columns", elements[0].length);
         }
         return map;
+    }
+
+    //перевизначений метод equals
+    @Override
+    public boolean equals(Object other) {
+        if(this == other)
+            return true;
+        if(getClass() != other.getClass())
+            return false;
+        Matrix newMatrix = (Matrix) other;
+        return (elements.length == newMatrix.elements.length && elements[0].length == newMatrix.elements[0].length && Arrays.deepEquals(elements, newMatrix.elements));
+    }
+
+    //перевизначений метод hashCode
+    @Override
+    public int hashCode() {
+        return Objects.hash(elements.length, elements[0].length, Arrays.deepHashCode(elements), 31);
     }
 
     //Повертає матрицю
