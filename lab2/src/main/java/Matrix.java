@@ -251,6 +251,65 @@ public class Matrix implements IMatrix {
         return columnMat;
     }
 
+    //верхня трикутна матриця
+    public void upperTriangular() {
+
+        float[][] l = new float[this.elements.length][this.elements[0].length];
+        float[][] u = new float[this.elements.length][this.elements[0].length];
+
+        for (int i = 0; i < this.elements.length; i++) {
+            for (int k = i; k < this.elements.length; k++) {
+                int sum = 0;
+                for (int j = 0; j < i; j++)
+                    sum += (l[i][j] * u[j][k]);
+
+                u[i][k] = this.elements[i][k] - sum;
+            }
+
+            for (int k = i; k < this.elements.length; k++) {
+                if (i == k)
+                    l[i][i] = 1;
+                else {
+                    int sum = 0;
+                    for (int j = 0; j < i; j++)
+                        sum += (l[k][j] * u[j][i]);
+                    l[k][i] = (this.elements[k][i] - sum) / u[i][i];
+                }
+            }
+        }
+
+        this.elements = u;
+    }
+
+    //нижня трикутна матриця
+    public void lowerTriangular() {
+
+        float[][] l = new float[this.elements.length][this.elements[0].length];
+        float[][] u = new float[this.elements.length][this.elements[0].length];
+
+        for (int i = 0; i < this.elements.length; i++) {
+            for (int k = i; k < this.elements.length; k++) {
+                int sum = 0;
+                for (int j = 0; j < i; j++)
+                    sum += (l[i][j] * u[j][k]);
+
+                u[i][k] = this.elements[i][k] - sum;
+            }
+
+            for (int k = i; k < this.elements.length; k++) {
+                if (i == k)
+                    l[i][i] = 1;
+                else {
+                    int sum = 0;
+                    for (int j = 0; j < i; j++)
+                        sum += (l[k][j] * u[j][i]);
+                    l[k][i] = (this.elements[k][i] - sum) / u[i][i];
+                }
+            }
+        }
+        this.elements = l;
+    }
+
     //Повертає матрицю
     @Override
     public float[][] getMatrix() {

@@ -386,4 +386,39 @@ public class MatrixTest {
         Throwable thrown = Assertions.assertThrows(NegativeArraySizeException.class, () -> Matrix.columnMatrix(-2));
         Assertions.assertEquals("Column value must be not negative or equal 0", thrown.getMessage());
     }
+
+    //Перення матриці в нижню та верхню трикутну
+    @Test
+    public void step15() {
+        Matrix matrix = new Matrix(3,3);
+        float[][] fillMatrx = {{2, 3, 3}, {2, 7, 7}, {2, 3, 2}};
+        matrix.fillElem(fillMatrx);
+
+        Matrix matrix1 = new Matrix(3,3);
+        matrix1.fillElem(fillMatrx);
+
+        matrix.upperTriangular();
+
+        Assertions.assertEquals(2, matrix.getMatrix()[0][0]);
+        Assertions.assertEquals(3, matrix.getMatrix()[0][1]);
+        Assertions.assertEquals(3, matrix.getMatrix()[0][2]);
+        Assertions.assertEquals(0, matrix.getMatrix()[1][0]);
+        Assertions.assertEquals(4, matrix.getMatrix()[1][1]);
+        Assertions.assertEquals(4, matrix.getMatrix()[1][2]);
+        Assertions.assertEquals(0, matrix.getMatrix()[2][0]);
+        Assertions.assertEquals(0, matrix.getMatrix()[2][1]);
+        Assertions.assertEquals(-1, matrix.getMatrix()[2][2]);
+
+        matrix1.lowerTriangular();
+
+        Assertions.assertEquals(1, matrix1.getMatrix()[0][0]);
+        Assertions.assertEquals(0, matrix1.getMatrix()[0][1]);
+        Assertions.assertEquals(0, matrix1.getMatrix()[0][2]);
+        Assertions.assertEquals(1, matrix1.getMatrix()[1][0]);
+        Assertions.assertEquals(1, matrix1.getMatrix()[1][1]);
+        Assertions.assertEquals(0, matrix1.getMatrix()[1][2]);
+        Assertions.assertEquals(1, matrix1.getMatrix()[2][0]);
+        Assertions.assertEquals(0, matrix1.getMatrix()[2][1]);
+        Assertions.assertEquals(1, matrix1.getMatrix()[2][2]);
+    }
 }
